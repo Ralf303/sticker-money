@@ -105,6 +105,15 @@ class RedisService extends Redis {
 
     return value || "Нечетный";
   }
+
+  async setDemo(id: number): Promise<void> {
+    await this.client.set(`demo_${String(id)}`, "true", { EX: 86400 });
+  }
+
+  async getDemo(id: number): Promise<boolean> {
+    const value = await this.client.get(`demo_${String(id)}`);
+    return value === "true";
+  }
 }
 
 export default RedisService;

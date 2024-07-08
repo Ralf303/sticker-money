@@ -20,4 +20,8 @@ export default abstract class Redis {
   abstract setOption(id: number, option: string): Promise<void>;
 
   abstract getOption(id: number): Promise<string>;
+
+  abstract setDemo(id: number): Promise<void>;
+
+  abstract getDemo(id: number): Promise<boolean>;
 }

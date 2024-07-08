@@ -90,4 +90,33 @@ export default class KeyboardService implements IKeyboard {
 
     return keyboard.reply_markup;
   }
+
+  down(card: string, amount: number): InlineKeyboardMarkup {
+    const keyboard = Keyboard.inline([
+      [
+        Key.callback(
+          ru.buttons.balance.check.approve,
+          `down_${card}_${amount}`
+        ),
+      ],
+      [ru.buttons.balance.check.retry],
+    ]);
+
+    return keyboard.reply_markup;
+  }
+
+  back(): InlineKeyboardMarkup {
+    const keyboard = Keyboard.inline([[ru.buttons.back]]);
+
+    return keyboard.reply_markup;
+  }
+
+  channel(id: string, amount: string): InlineKeyboardMarkup {
+    const keyboard = Keyboard.inline([
+      [ru.buttons.channel.succsess],
+      [Key.callback(ru.buttons.channel.wrong, `wrong_${id}_${amount}`)],
+    ]);
+
+    return keyboard.reply_markup;
+  }
 }

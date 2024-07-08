@@ -17,6 +17,7 @@ export class Slot extends Action {
         await this.redis.checkAction(ctx.from.id, ctx);
         const { id, first_name, username } = ctx.from;
         const user = await this.db.getUser(String(id), username, first_name);
+        const stakes = await this.db.getStakes();
         const stake = await this.redis.getStake(id);
         const status = await this.redis.getStatus(id);
 
@@ -48,27 +49,27 @@ export class Slot extends Action {
 
         switch (dice) {
           case 64:
-            winAmount = Number(stake) * 15;
+            winAmount = Number(stake) * stakes.jackpot;
             text = `🎉ДЖЕКПОТ🎉\nВыигрыш: ${winAmount}\n\n`;
             break;
 
           case 43:
-            winAmount = Number(stake) * 10;
-            text = `🍋ЛИМОНЧИКИ🍋\n✅ Выигрыш: ${winAmount}\n\n`;
+            winAmount = Number(stake) * stakes.lemons;
+            text = `🍋ЛИМОНЧИКИ🍋\n🎉 Выигрыш: ${winAmount}\n\n`;
             break;
 
           case 22:
-            winAmount = Number(stake) * 8;
-            text = `🍒ЯГОДКИ🍒\n✅ Выигрыш: ${winAmount}\n\n`;
+            winAmount = Number(stake) * stakes.berries;
+            text = `🍒ЯГОДКИ🍒\n🎉 Выигрыш: ${winAmount}\n\n`;
             break;
 
           case 1:
-            winAmount = Number(stake) * 5;
-            text = `🍸КОКТЕЛЬЧИК🍸\n✅ Выигрыш: ${winAmount}\n\n`;
+            winAmount = Number(stake) * stakes.bar;
+            text = `🍸КОКТЕЛЬЧИКИ🍸\n🎉 Выигрыш: ${winAmount}\n\n`;
             break;
 
           default:
-            text = `🎰К сожалению не повезло😢\n🗿 Выигрыш: 0\n\n`;
+            text = `🎰 К сожалению не повезло😢\n🗿 Выигрыш: 0\n\n`;
             winAmount = 0;
             break;
         }

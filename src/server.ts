@@ -12,6 +12,7 @@ class Server {
   private key: string;
   private app: Application;
   private webhookUrl: string;
+  private token: string;
 
   constructor(
     private bot: Telegraf<CustomContext>,
@@ -20,16 +21,15 @@ class Server {
     this.port = parseInt(configService.get("PORT"), 10);
     this.sert = configService.get("CERT");
     this.key = configService.get("KEY");
+    this.webhookUrl = configService.get("WEB_HOOK_URL");
+    this.token = configService.get("BOT_TOKEN");
     this.app = express();
     this.app.use(cors());
     this.app.use(express.json());
-    this.webhookUrl = process.env.WEB_HOOK_URL || "";
 
     if (this.webhookUrl) {
-      this.bot.telegram.setWebhook(
-        `${this.webhookUrl}/bot${process.env.BOT_TOKEN}`
-      );
-      this.app.use(this.bot.webhookCallback(`/bot${process.env.BOT_TOKEN}`));
+      this.bot.telegram.setWebhook(`${this.webhookUrl}/bot${this.token}`);
+      this.app.use(this.bot.webhookCallback(`/bot${this.token}`));
     } else {
       this.bot.launch({ dropPendingUpdates: true });
       console.log("Бот запущен на пулинге");

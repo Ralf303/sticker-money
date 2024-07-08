@@ -1,3 +1,4 @@
+import { Stakes } from "../../core/stakes";
 import { User } from "../../core/user";
 
 export default abstract class Database {
@@ -7,8 +8,8 @@ export default abstract class Database {
 
   abstract getUser(
     chatId: string,
-    username: string | undefined,
-    firstName: string | undefined
+    username?: string | undefined,
+    firstName?: string | undefined
   ): Promise<User>;
 
   abstract updateUserBalance(
@@ -20,4 +21,6 @@ export default abstract class Database {
     id: number,
     value: string | boolean | number
   ): Promise<void>;
+
+  abstract getStakes(): Promise<Stakes>;
 }

@@ -22,12 +22,17 @@ import { Slot } from "./services/games/slot/slot";
 import { Cube } from "./services/games/cube/cube";
 import { WaletActions } from "./modules/actions/wallet.actions";
 import Server from "./server";
+import AmountScene from "./modules/scenes/amount.scene";
+import CardScene from "./modules/scenes/card.scene";
+import ChannelActions from "./modules/actions/channel.actoins";
 
 class Bot {
   private commands: Command[] = [];
   private actions: Action[] = [];
   private slotScene: Scene;
   private cubeScene: Scene;
+  private amountScene: Scene;
+  private cardScene: Scene;
   private bot: Telegraf<CustomContext>;
 
   protected db: Database;
@@ -39,6 +44,8 @@ class Bot {
     this.redis = new RedisService();
     this.slotScene = new SlotStakeScene(this.redis, this.db);
     this.cubeScene = new CubeStakeScene(this.redis, this.db);
+    this.amountScene = new AmountScene(this.redis, this.db);
+    this.cardScene = new CardScene(this.redis, this.db);
   }
 
   public async start() {
@@ -55,12 +62,15 @@ class Bot {
       new WaletActions(this.bot, this.redis, this.db),
       new Slot(this.bot, this.redis, this.db),
       new Cube(this.bot, this.redis, this.db),
+      new ChannelActions(this.bot, this.redis, this.db),
     ];
     await this.db.connect();
     await this.redis.connect();
     const stage = new Scenes.Stage<CustomContext>([
       this.slotScene.init(),
       this.cubeScene.init(),
+      this.amountScene.init(),
+      this.cardScene.init(),
     ]);
     this.bot.use(session());
     this.bot.use(stage.middleware());

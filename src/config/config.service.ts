@@ -22,7 +22,7 @@ export default class ConfigService implements IConfigService {
     const res = this.config[key];
 
     if (!res) {
-      return `No env for key ${key}`;
+      return ``;
     }
 
     return res;

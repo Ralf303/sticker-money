@@ -18,6 +18,7 @@ export class Cube extends Action {
         const { id, first_name, username } = ctx.from;
         const user = await this.db.getUser(String(id), username, first_name);
         const stake = await this.redis.getStake(id);
+        const stakes = await this.db.getStakes();
         const status = await this.redis.getStatus(id);
         const option = await this.redis.getOption(id);
 
@@ -48,25 +49,25 @@ export class Cube extends Action {
         await sleep(3500);
 
         if (option === "Четный" && dice % 2 === 0) {
-          winAmount = Number(stake) * 2;
+          winAmount = Number(stake) * stakes.odd;
           text = `${getEmojiNumber(
             dice
-          )} - Четный\n✅ Выигрыш: ${winAmount}\n\n`;
+          )} - Четный\n🎉 Выигрыш: ${winAmount}\n\n`;
         } else if (option === "Нечетный" && dice % 2 != 0) {
-          winAmount = Number(stake) * 2;
+          winAmount = Number(stake) * stakes.odd;
           text = `${getEmojiNumber(
             dice
-          )} - Нечетный\n✅ Выигрыш: ${winAmount}\n\n`;
+          )} - Нечетный\n🎉 Выигрыш: ${winAmount}\n\n`;
         } else if (Number(option) === dice) {
-          winAmount = Number(stake) * 2;
+          winAmount = Number(stake) * stakes.correct;
           text = `${getEmojiNumber(
             dice
-          )} - Совпал\n✅ Выигрыш: ${winAmount}\n\n`;
+          )} - Совпал\n🎉 Выигрыш: ${winAmount}\n\n`;
         } else {
           winAmount = 0;
           text = `${getEmojiNumber(
             dice
-          )} - Не угадал😢\n✅ Выигрыш: ${winAmount}\n\n`;
+          )} - Не угадал😢\n🗿 Выигрыш: ${winAmount}\n\n`;
         }
 
         switch (status) {

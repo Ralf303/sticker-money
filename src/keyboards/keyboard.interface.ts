@@ -8,4 +8,7 @@ export interface IKeyboard {
   chooseSlot(): InlineKeyboardMarkup;
   chooseKube(): InlineKeyboardMarkup;
   balance(): InlineKeyboardMarkup;
+  down(card: string, amount: number): InlineKeyboardMarkup;
+  back(): InlineKeyboardMarkup;
+  channel(id: string, amount: string): InlineKeyboardMarkup;
 }

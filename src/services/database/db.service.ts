@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import Database from "./db.class";
 import { User } from "../../core/user";
+import { Stakes } from "../../core/stakes";
 
 export class DatabaseService extends Database {
   private prisma: PrismaClient;
@@ -21,8 +22,8 @@ export class DatabaseService extends Database {
 
   async getUser(
     chatId: string,
-    username: string | undefined,
-    firstName: string | undefined
+    username?: string | undefined,
+    firstName?: string | undefined
     //@ts-ignore
   ): Promise<User> {
     try {
@@ -77,6 +78,22 @@ export class DatabaseService extends Database {
       });
 
       return;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  //@ts-ignore
+  async getStakes(): Promise<Stakes> {
+    try {
+      const stakes: Stakes | null = await this.prisma.stakes.findFirst({
+        where: {
+          id: 1,
+        },
+      });
+
+      //@ts-ignore
+      return stakes;
     } catch (error) {
       console.log(error);
     }

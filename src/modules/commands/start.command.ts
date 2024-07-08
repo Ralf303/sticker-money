@@ -17,9 +17,12 @@ export class StartCommand extends Command {
         const { id, first_name, username } = ctx.from;
         await this.db.getUser(String(id), username, first_name);
         const keyboard = this.keyboardService.main();
-        const message = await ctx.reply(ru.main.main, {
-          reply_markup: keyboard,
-        });
+        const message = await ctx.reply(
+          `${ru.main.welcome}${first_name}${ru.main.main}`,
+          {
+            reply_markup: keyboard,
+          }
+        );
         await this.redis.saveAction(ctx.from.id, message);
       } catch (error) {
         console.log(error);

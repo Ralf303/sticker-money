@@ -30,9 +30,12 @@ export class StartActions extends Action {
         await ctx.scene.leave();
         await this.redis.checkAction(ctx.from.id, ctx);
         await ctx.deleteMessage();
-        const message = await ctx.replyWithHTML(ru.main.main, {
-          reply_markup: this.keyboardService.main(),
-        });
+        const message = await ctx.replyWithHTML(
+          `${ru.main.welcome}${ctx.from.first_name}${ru.main.main}`,
+          {
+            reply_markup: this.keyboardService.main(),
+          }
+        );
         await this.redis.saveAction(ctx.from.id, message);
       } catch (error) {
         console.log("Ошибка при action back", error);
