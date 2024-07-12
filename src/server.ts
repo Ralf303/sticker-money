@@ -36,8 +36,8 @@ class Server {
         console.log("НОВЫЙ ПЛАТЕЖ", id, order_id, amount, in_amount);
 
         if (in_amount >= amount) {
-          await redis.deleteOrder(id);
-          const user = await db.getUser(id);
+          await redis.deleteOrder(order_id);
+          const user = await db.getUser(String(order_id));
           await db.updateUserBalance(user.id, user.balance + amount);
           await bot.telegram.sendMessage(
             user.chatId,
@@ -60,6 +60,7 @@ class Server {
     if (this.webhookUrl) {
       bot.telegram.setWebhook(`${this.webhookUrl}/bot${this.token}`);
       this.app.use(bot.webhookCallback(`/bot${this.token}`));
+      this.app.listen(5000);
     } else {
       this.app.listen(5000);
       bot.launch({ dropPendingUpdates: true });
