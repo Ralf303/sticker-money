@@ -60,7 +60,6 @@ class Server {
     if (this.webhookUrl) {
       bot.telegram.setWebhook(`${this.webhookUrl}/bot${this.token}`);
       this.app.use(bot.webhookCallback(`/bot${this.token}`));
-      this.app.listen(5000);
     } else {
       this.app.listen(5000);
       bot.launch({ dropPendingUpdates: true });
@@ -79,6 +78,9 @@ class Server {
         console.log(`HTTPS запустился на порту ${this.port}`);
       });
 
+      https.createServer(httpsOptions, this.app).listen(5000, () => {
+        console.log(`API HTTPS запустился на порту ${5000}`);
+      });
       console.log(`бот запущен на вебхуке на ${this.webhookUrl}`);
     }
   }
