@@ -35,6 +35,16 @@ class UpAmountScene extends Scene {
           });
         }
         const link = await getLink(amount, ctx.from.id);
+
+        if (!link) {
+          return await ctx.reply(
+            "Сервис оплаты для тебя пока не доступен, подожди пару минут или пополни баланс с помощью поддержки => @StickerMoney_support",
+            {
+              reply_markup: this.keyboardService.cancel(),
+            }
+          );
+        }
+
         await this.redis.setOrder(ctx.from.id, link);
         await ctx.reply(
           `Для пополнения счета на ${ctx.message.text}₽ перейдите по <a href="${link}">ссылке</a>.\n\nПосле оплаты твой баланс автоматически будет пополнен.`,
