@@ -119,4 +119,16 @@ export default class KeyboardService implements IKeyboard {
 
     return keyboard.reply_markup;
   }
+
+  cancel(): InlineKeyboardMarkup {
+    const keyboard = Keyboard.inline([[ru.buttons.cancel]]);
+
+    return keyboard.reply_markup;
+  }
+
+  getUrl(link: string): InlineKeyboardMarkup {
+    const keyboard = Keyboard.inline([[Key.url(ru.buttons.getUrl, link)]]);
+
+    return keyboard.reply_markup;
+  }
 }

@@ -10,5 +10,7 @@ export interface IKeyboard {
   balance(): InlineKeyboardMarkup;
   down(card: string, amount: number): InlineKeyboardMarkup;
   back(): InlineKeyboardMarkup;
+  cancel(): InlineKeyboardMarkup;
   channel(id: string, amount: string): InlineKeyboardMarkup;
+  getUrl(link: string): InlineKeyboardMarkup;
 }

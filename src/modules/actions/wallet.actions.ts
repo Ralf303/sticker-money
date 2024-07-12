@@ -67,6 +67,29 @@ export class WaletActions extends Action {
       }
     });
 
+    this.bot.action(ru.buttons.balance.up, async (ctx) => {
+      try {
+        await ctx.deleteMessage();
+        await ctx.scene.leave();
+        const { id } = ctx.from;
+        await this.redis.checkAction(id, ctx);
+        const link = await this.redis.getOrder(id);
+
+        if (link.length < 1) {
+          return await ctx.scene.enter("upAmount");
+        }
+
+        const message = await ctx.reply(
+          `У тебя не оплаченный заказ\n\nОплати его по ссылке: ${link}\n\nили подожди 20 минут для создания нового`,
+          { reply_markup: this.keyboardService.back() }
+        );
+
+        await this.redis.saveAction(id, message);
+      } catch (error) {
+        console.log("Ошибка при action на пополнении", error);
+      }
+    });
+
     this.bot.action(ru.buttons.balance.check.retry, async (ctx) => {
       try {
         await ctx.scene.leave();

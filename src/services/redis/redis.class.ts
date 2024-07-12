@@ -24,4 +24,10 @@ export default abstract class Redis {
   abstract setDemo(id: number): Promise<void>;
 
   abstract getDemo(id: number): Promise<boolean>;
+
+  abstract setOrder(id: number, link: string): Promise<void>;
+
+  abstract getOrder(id: number): Promise<string>;
+
+  abstract deleteOrder(id: number): Promise<void>;
 }

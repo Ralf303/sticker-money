@@ -25,6 +25,7 @@ import Server from "./server";
 import AmountScene from "./modules/scenes/amount.scene";
 import CardScene from "./modules/scenes/card.scene";
 import ChannelActions from "./modules/actions/channel.actoins";
+import UpAmountScene from "./modules/scenes/upAmount.scene";
 
 class Bot {
   private commands: Command[] = [];
@@ -33,6 +34,7 @@ class Bot {
   private cubeScene: Scene;
   private amountScene: Scene;
   private cardScene: Scene;
+  private upScene: Scene;
   private bot: Telegraf<CustomContext>;
 
   protected db: Database;
@@ -46,6 +48,7 @@ class Bot {
     this.cubeScene = new CubeStakeScene(this.redis, this.db);
     this.amountScene = new AmountScene(this.redis, this.db);
     this.cardScene = new CardScene(this.redis, this.db);
+    this.upScene = new UpAmountScene(this.redis, this.db);
   }
 
   public async start() {
@@ -71,13 +74,19 @@ class Bot {
       this.cubeScene.init(),
       this.amountScene.init(),
       this.cardScene.init(),
+      this.upScene.init(),
     ]);
     this.bot.use(session());
     this.bot.use(stage.middleware());
     this.commands.forEach((command) => command.handler());
     this.actions.forEach((action) => action.handler());
     this.bot.catch((error) => console.log(error));
-    const server = new Server(this.bot, this.configService);
+    const server = new Server(
+      this.bot,
+      this.redis,
+      this.db,
+      this.configService
+    );
     await server.start();
   }
 }

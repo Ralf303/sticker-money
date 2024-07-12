@@ -114,6 +114,23 @@ class RedisService extends Redis {
     const value = await this.client.get(`demo_${String(id)}`);
     return value === "true";
   }
+
+  async setOrder(id: number, link: string): Promise<void> {
+    await this.client.set(`order_${String(id)}`, link, { EX: 600 });
+  }
+
+  async getOrder(id: number): Promise<string> {
+    const value = (await this.client.get(`order_${String(id)}`)) || "";
+    if (value) {
+      return value;
+    } else {
+      return value;
+    }
+  }
+
+  async deleteOrder(id: number): Promise<void> {
+    await this.delete(`order_${String(id)}`);
+  }
 }
 
 export default RedisService;
