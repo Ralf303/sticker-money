@@ -16,8 +16,6 @@ export class GameActions extends Action {
         await this.redis.checkAction(ctx.from.id, ctx);
         await ctx.deleteMessage();
         const stakes = await this.db.getStakes();
-        console.log(stakes);
-
         const message = await ctx.replyWithHTML(
           `${ru.main.slots.rules.start}${stakes.jackpot}${ru.main.slots.rules.lemons}${stakes.lemons}${ru.main.slots.rules.berries}${stakes.berries}${ru.main.slots.rules.bars}${stakes.bar}${ru.main.slots.rules.end}\n\n${ru.main.choose}`,
           {
