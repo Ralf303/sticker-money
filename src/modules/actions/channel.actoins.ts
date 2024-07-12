@@ -24,7 +24,7 @@ export class ChannelActions extends Action {
           "Заявка была отменена, средства вернулись"
         );
       } catch (error) {
-        console.log("Ошибка при action slots", error);
+        console.log("Ошибка при отмене средств", error);
       }
     });
   }
