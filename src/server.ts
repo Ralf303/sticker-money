@@ -34,6 +34,7 @@ class Server {
       try {
         const { id, order_id, amount, in_amount } = req.body;
         console.log("НОВЫЙ ПЛАТЕЖ", id, order_id, amount, in_amount);
+        console.log(req);
 
         if (in_amount >= amount) {
           await redis.deleteOrder(order_id);
