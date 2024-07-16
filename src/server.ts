@@ -29,9 +29,11 @@ class Server {
     this.token = configService.get("BOT_TOKEN");
     this.app = express();
     this.app.use(cors());
+    this.app.use(express.urlencoded());
     this.app.use(express.json());
     this.app.post("/payment", async (req, res) => {
       try {
+        //@ts-ignore
         const { id, order_id, amount, in_amount } = req.body;
         console.log("НОВЫЙ ПЛАТЕЖ", id, order_id, amount, in_amount);
         console.log(req);
