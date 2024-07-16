@@ -34,20 +34,15 @@ class Server {
     this.app.post("/payment", async (req, res) => {
       try {
         //@ts-ignore
-        const { id, order_id, amount, in_amount } = req.body;
-        console.log("НОВЫЙ ПЛАТЕЖ", id, order_id, amount, in_amount);
-        console.log(req);
+        const { order_id, amount, in_amount } = req.body;
 
         if (in_amount >= amount) {
           await redis.deleteOrder(order_id);
           const user = await db.getUser(String(order_id));
-          await db.updateUserBalance(user.id, user.balance + amount);
+          await db.updateUserBalance(user.id, user.balance + Number(amount));
           await bot.telegram.sendMessage(
             user.chatId,
-            `Оплата прошла успешно, баланс поплнен на ${amount}`
-          );
-          console.log(
-            `Успешный платеж: id=${id}, order_id=${order_id}, сумма=${amount}`
+            `Оплата прошла успешно, баланс поплнен на ${amount}\n\nСкорее жми /start для начала игры`
           );
           res.status(200).send("OK");
         } else {
