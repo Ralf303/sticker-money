@@ -45,7 +45,7 @@ export class Slot extends Action {
           emoji: "🎰",
         });
         const dice = slot.dice.value;
-        await sleep(2300);
+        await sleep(4000);
 
         switch (dice) {
           case 64:

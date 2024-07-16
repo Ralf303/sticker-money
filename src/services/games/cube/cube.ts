@@ -46,7 +46,7 @@ export class Cube extends Action {
           emoji: "🎲",
         });
         const dice = slot.dice.value;
-        await sleep(3500);
+        await sleep(4000);
 
         if (option === "Четный" && dice % 2 === 0) {
           winAmount = Number(stake) * stakes.odd;

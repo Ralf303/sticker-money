@@ -16,12 +16,10 @@ export class GameActions extends Action {
         await this.redis.checkAction(ctx.from.id, ctx);
         await ctx.deleteMessage();
         const stakes = await this.db.getStakes();
-        const message = await ctx.replyWithHTML(
-          `${ru.main.slots.rules.start}${stakes.jackpot}${ru.main.slots.rules.lemons}${stakes.lemons}${ru.main.slots.rules.berries}${stakes.berries}${ru.main.slots.rules.bars}${stakes.bar}${ru.main.slots.rules.end}\n\n${ru.main.choose}`,
-          {
-            reply_markup: this.keyboardService.chooseSlot(),
-          }
-        );
+        const text = `${ru.main.slots.rules.start}${stakes.jackpot}${ru.main.slots.rules.lemons}${stakes.lemons}${ru.main.slots.rules.berries}${stakes.berries}${ru.main.slots.rules.bars}${stakes.bar}${ru.main.slots.rules.end}\n\n${ru.main.choose}`;
+        const message = await ctx.replyWithHTML(text, {
+          reply_markup: this.keyboardService.chooseSlot(),
+        });
         await this.redis.saveAction(ctx.from.id, message);
       } catch (error) {
         console.log("Ошибка при action slots", error);
@@ -32,8 +30,9 @@ export class GameActions extends Action {
       try {
         await this.redis.checkAction(ctx.from.id, ctx);
         await ctx.deleteMessage();
+        const stakes = await this.db.getStakes();
         const message = await ctx.replyWithHTML(
-          `${ru.main.сube.rules}\n\n${ru.main.choose}`,
+          `${ru.main.сube.rules}${stakes.correct}${ru.main.сube.rules1}${stakes.odd}${ru.main.сube.rules2}\n\n${ru.main.choose}`,
           {
             reply_markup: this.keyboardService.chooseKube(),
           }

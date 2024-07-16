@@ -47,7 +47,7 @@ class UpAmountScene extends Scene {
 
         await this.redis.setOrder(ctx.from.id, link);
         await ctx.reply(
-          `Для пополнения счета на ${ctx.message.text}₽ перейдите по <a href="${link}">ссылке</a>.\n\nПосле оплаты твой баланс автоматически будет пополнен.`,
+          `Для пополнения счета на ${ctx.message.text}₽ перейди по <a href="${link}">ссылке</a>.\n\nПосле оплаты твой баланс автоматически будет пополнен.`,
           {
             reply_markup: this.keyboardService.getUrl(link),
             parse_mode: "HTML",

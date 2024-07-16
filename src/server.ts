@@ -7,6 +7,8 @@ import { CustomContext } from "./core/context";
 import { IConfigService } from "./config/config.interface";
 import Redis from "./services/redis/redis.class";
 import Database from "./services/database/db.class";
+import { IKeyboard } from "./keyboards/keyboard.interface";
+import KeyboardService from "./keyboards/keyboard.service";
 
 class Server {
   private port: number;
@@ -15,6 +17,7 @@ class Server {
   private app: Application;
   private webhookUrl: string;
   private token: string;
+  private keyboard: IKeyboard;
 
   constructor(
     private bot: Telegraf<CustomContext>,
@@ -22,6 +25,7 @@ class Server {
     private db: Database,
     private configService: IConfigService
   ) {
+    this.keyboard = new KeyboardService();
     this.port = parseInt(configService.get("PORT"), 10);
     this.sert = configService.get("CERT");
     this.key = configService.get("KEY");
@@ -29,7 +33,7 @@ class Server {
     this.token = configService.get("BOT_TOKEN");
     this.app = express();
     this.app.use(cors());
-    this.app.use(express.urlencoded());
+    this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
     this.app.post("/payment", async (req, res) => {
       try {
@@ -40,10 +44,12 @@ class Server {
           await redis.deleteOrder(order_id);
           const user = await db.getUser(String(order_id));
           await db.updateUserBalance(user.id, user.balance + Number(amount));
-          await bot.telegram.sendMessage(
+          const message = await bot.telegram.sendMessage(
             user.chatId,
-            `Оплата прошла успешно, баланс поплнен на ${amount}\n\nСкорее жми /start для начала игры`
+            `Оплата прошла успешно, баланс пополнен на ${amount}`,
+            { reply_markup: this.keyboard.main() }
           );
+          await this.redis.saveAction(Number(user.chatId), message);
           res.status(200).send("OK");
         } else {
           console.log("Ошибка: недостаточная сумма");
