@@ -16,6 +16,8 @@ export class StartActions extends Action {
         await ctx.scene.leave();
         await this.redis.checkAction(ctx.from.id, ctx);
         await ctx.deleteMessage();
+        const user = await this.db.getUser(String(ctx.from.id));
+        if (user.isBan) return await ctx.reply(ru.main.ban);
         const message = await ctx.replyWithHTML(ru.main.games, {
           reply_markup: this.keyboardService.games(),
         });

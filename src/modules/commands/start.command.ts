@@ -15,7 +15,8 @@ export class StartCommand extends Command {
       try {
         await ctx.scene.leave();
         const { id, first_name, username } = ctx.from;
-        await this.db.getUser(String(id), username, first_name);
+        const user = await this.db.getUser(String(id), username, first_name);
+        if (user.isBan) return await ctx.reply(ru.main.ban);
         const keyboard = this.keyboardService.main();
         const message = await ctx.reply(
           `${ru.main.welcome}${first_name}${ru.main.main}`,
