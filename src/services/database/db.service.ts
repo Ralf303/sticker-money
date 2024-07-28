@@ -105,6 +105,7 @@ export class DatabaseService extends Database {
     description: string
   ): Promise<void> {
     try {
+      //@ts-ignore
       await this.prisma.logs.create({
         data: {
           type: type,
