@@ -50,6 +50,11 @@ class Server {
             { reply_markup: this.keyboard.main() }
           );
           await this.redis.saveAction(Number(user.chatId), message);
+          await this.db.setLogs(
+            "up",
+            user.chatId,
+            `Баланс ${user.firstName} успешно пополнен на\nСумму: ${amount}`
+          );
           res.status(200).send("OK");
         } else {
           console.log("Ошибка: недостаточная сумма");

@@ -32,3 +32,11 @@ model Admins {
   status   String @default("admin")
   password String @default("none")
 }
+
+model Logs {
+  id          Int      @id @unique @default(autoincrement())
+  type        String
+  userId      String
+  description String
+  date        DateTime @default(now())
+}

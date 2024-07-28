@@ -17,14 +17,37 @@ export class ChannelActions extends Action {
         const user = await this.db.getUser(id);
         await this.db.updateUserBalance(user.id, user.balance + Number(amount));
         await ctx.editMessageText(
-          `Заявка юзера ${user.firstName} была упешно отменена админом ${ctx.from.first_name}`
+          `❌Заявка юзера ${user.firstName} была упешно отменена админом ${ctx.from.first_name}❌\nСумма: ${amount}\n\n#отмена`
         );
         await ctx.telegram.sendMessage(
           id,
           "Заявка была отменена, средства вернулись"
         );
+        await this.db.setLogs(
+          "down",
+          user.chatId,
+          `Заявка юзера ${user.firstName} была упешно отменена админом ${ctx.from.first_name}\nСумма: ${amount}`
+        );
       } catch (error) {
         console.log("Ошибка при отмене средств", error);
+      }
+    });
+
+    this.bot.action(/^done\w+\d+$/, async (ctx) => {
+      try {
+        //@ts-ignore
+        const [_, id, amount] = ctx.callbackQuery.data.split("_");
+        const user = await this.db.getUser(id);
+        await ctx.editMessageText(
+          `✅Вывод юзера ${user.firstName} был упешно выволнен ${ctx.from.first_name}✅\nСумма: ${amount}\n\n#выводы`
+        );
+        await this.db.setLogs(
+          "down",
+          user.chatId,
+          `Вывод юзера ${user.firstName} был упешно выволнен ${ctx.from.first_name}\nСумма: ${amount}`
+        );
+      } catch (error) {
+        console.log("Ошибка при выводе средств", error);
       }
     });
   }

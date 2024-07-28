@@ -7,3 +7,5 @@ export interface Stakes {
   odd: number;
   correct: number;
 }
+
+export type Logs = "cube" | "slots" | "up" | "down";

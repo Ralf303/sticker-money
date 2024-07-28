@@ -113,7 +113,7 @@ export default class KeyboardService implements IKeyboard {
 
   channel(id: string, amount: string): InlineKeyboardMarkup {
     const keyboard = Keyboard.inline([
-      [ru.buttons.channel.succsess],
+      [Key.callback(ru.buttons.channel.succsess, `done_${id}_${amount}`)],
       [Key.callback(ru.buttons.channel.wrong, `wrong_${id}_${amount}`)],
     ]);
 

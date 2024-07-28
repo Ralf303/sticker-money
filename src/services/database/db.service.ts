@@ -98,4 +98,24 @@ export class DatabaseService extends Database {
       console.log(error);
     }
   }
+
+  async setLogs(
+    type: string,
+    userId: string,
+    description: string
+  ): Promise<void> {
+    try {
+      await this.prisma.logs.create({
+        data: {
+          type: type,
+          userId: userId,
+          description: description,
+        },
+      });
+
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
