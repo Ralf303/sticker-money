@@ -1,4 +1,4 @@
-import { Logs, Stakes } from "../../core/stakes";
+import { Logs, Stakes, StakeType } from "../../core/stakes";
 import { User } from "../../core/user";
 
 export default abstract class Database {
@@ -29,4 +29,6 @@ export default abstract class Database {
     userId: string,
     description: string
   ): Promise<void>;
+
+  abstract updateStake(type: StakeType, value: number): Promise<boolean>;
 }

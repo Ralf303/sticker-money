@@ -8,4 +8,12 @@ export interface Stakes {
   correct: number;
 }
 
+export type StakeType =
+  | "jackpot"
+  | "bar"
+  | "berries"
+  | "lemons"
+  | "odd"
+  | "correct";
+
 export type Logs = "cube" | "slots" | "up" | "down";
