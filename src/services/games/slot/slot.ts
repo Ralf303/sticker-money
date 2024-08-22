@@ -93,7 +93,7 @@ export class Slot extends Action {
               user.balance + winAmount - Number(stake)
             );
             await this.db.setLogs(
-              "cube",
+              "slots",
               user.chatId,
               `Юзер сыграл в слот, ставка ${stake}, выйгрыш ${winAmount}, итоговый баланс ${
                 user.balance + winAmount - Number(stake)
