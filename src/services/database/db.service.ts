@@ -49,6 +49,16 @@ export class DatabaseService extends Database {
     }
   }
 
+  async getUsers(): Promise<User[]> {
+    try {
+      const users: User[] = await this.prisma.users.findMany();
+      return users;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Failed to retrieve users.");
+    }
+  }
+
   async updateUserBalance(id: number, value: number): Promise<void> {
     try {
       await this.prisma.users.update({

@@ -26,6 +26,7 @@ import AmountScene from "./modules/scenes/amount.scene";
 import CardScene from "./modules/scenes/card.scene";
 import ChannelActions from "./modules/actions/channel.actoins";
 import UpAmountScene from "./modules/scenes/upAmount.scene";
+import spamScene from "./modules/scenes/spam.scene";
 
 class Bot {
   private commands: Command[] = [];
@@ -35,6 +36,7 @@ class Bot {
   private amountScene: Scene;
   private cardScene: Scene;
   private upScene: Scene;
+  private spamScene: Scene;
   private bot: Telegraf<CustomContext>;
 
   protected db: Database;
@@ -49,6 +51,7 @@ class Bot {
     this.amountScene = new AmountScene(this.redis, this.db);
     this.cardScene = new CardScene(this.redis, this.db);
     this.upScene = new UpAmountScene(this.redis, this.db);
+    this.spamScene = new spamScene(this.redis, this.db);
   }
 
   public async start() {
@@ -75,6 +78,7 @@ class Bot {
       this.amountScene.init(),
       this.cardScene.init(),
       this.upScene.init(),
+      this.spamScene.init(),
     ]);
     this.bot.use(session());
     this.bot.use(stage.middleware());

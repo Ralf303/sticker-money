@@ -35,6 +35,17 @@ export class Commands extends Command {
       }
     });
 
+    this.bot.command("new", async (ctx) => {
+      try {
+        if (!this.admins.includes(String(ctx.from.id))) {
+          return;
+        }
+        await ctx.scene.enter("spamScene");
+      } catch (error) {
+        console.log(error);
+      }
+    });
+
     this.bot.command("set", async (ctx) => {
       try {
         if (!this.admins.includes(String(ctx.from.id))) {

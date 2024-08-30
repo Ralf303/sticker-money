@@ -12,6 +12,8 @@ export default abstract class Database {
     firstName?: string | undefined
   ): Promise<User>;
 
+  abstract getUsers(): Promise<User[]>;
+
   abstract updateUserBalance(
     id: number,
     value: string | boolean | number
